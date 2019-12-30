@@ -1,0 +1,22 @@
+[core]
+	autocrlf = input
+	excludesfile = ~/.gitignore
+[user]
+	useConfigOnly = true
+	name = Bernhard Danecker
+	email = bernhard.danecker@gmail.com
+	signingKey = ""
+[core]
+	longpaths = true
+[fetch]
+	prune = true
+[push]
+	default = current
+[pull]
+	rebase = true
+
+[includeIf "gitdir:~/Documents/troii/"]
+	path = ~/Documents/troii/.gitconfig
+
+[includeIf "gitdir:~/Documents/studying/"]
+        path = ~/Documents/studying/.gitconfig
