@@ -2,4 +2,4 @@
 
 My personal configuration files and scripts.
 
-I use https://github.com/TheLocehiliosan/yadm[YADM] to manage my dotfiles.
+I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles.
