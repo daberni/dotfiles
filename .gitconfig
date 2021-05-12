@@ -1,22 +1,24 @@
 [core]
 	autocrlf = input
+	longpaths = true
 	excludesfile = ~/.gitignore
 [user]
 	useConfigOnly = true
 	name = Bernhard Danecker
 	email = bernhard.danecker@gmail.com
-	signingKey = ""
-[core]
-	longpaths = true
+[init]
+	defaultBranch = main
 [fetch]
 	prune = true
 [push]
 	default = current
 [pull]
 	rebase = true
+[alias]
+	ignored = ls-files -i --exclude-standard
 
 [includeIf "gitdir:~/Documents/troii/"]
 	path = ~/Documents/troii/.gitconfig
 
 [includeIf "gitdir:~/Documents/studying/"]
-        path = ~/Documents/studying/.gitconfig
+	path = ~/Documents/studying/.gitconfig
