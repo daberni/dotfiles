@@ -15,10 +15,12 @@
 [pull]
 	rebase = true
 [alias]
-	ignored = ls-files -i --exclude-standard
+	ignored = ls-files -ic --exclude-standard
 
 [includeIf "gitdir:~/Documents/troii/"]
 	path = ~/Documents/troii/.gitconfig
 
 [includeIf "gitdir:~/Documents/studying/"]
 	path = ~/Documents/studying/.gitconfig
+[merge]
+	ff = false
