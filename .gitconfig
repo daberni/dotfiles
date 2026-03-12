@@ -5,7 +5,8 @@
 [user]
 	useConfigOnly = true
 	name = Bernhard Danecker
-	email = bernhard.danecker@gmail.com
+	email = bernhard.danecker@troii.com
+	signingkey = /Users/bd/.ssh/id_ed25519.pub
 [init]
 	defaultBranch = main
 [fetch]
@@ -14,13 +15,21 @@
 	default = current
 [pull]
 	rebase = true
+[rebase]
+	autosquash = true
+	updateRefs = true
+	autostash = true
 [alias]
 	ignored = ls-files -ic --exclude-standard
 
-[includeIf "gitdir:~/Documents/troii/"]
-	path = ~/Documents/troii/.gitconfig
+[includeIf "gitdir:~/Developer/other/"]
+	path = ~/Developer/other/.gitconfig
 
 [includeIf "gitdir:~/Documents/studying/"]
 	path = ~/Documents/studying/.gitconfig
-[merge]
-	ff = false
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[gpg "ssh"]
+	allowedSignersFile = /Users/bd/.git_allowed_signers
