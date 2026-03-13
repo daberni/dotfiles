@@ -3,6 +3,6 @@
     "\UF72B"  = moveToEndOfLine:; // end
     "$\UF729" = moveToBeginningOfLineAndModifySelection:; // shift-home
     "$\UF72B" = moveToEndOfLineAndModifySelection:; // shift-end
-    // "@~5"     = back; // navigate back from Logitech
-    // "@~6"     = forward; // navigate forward from Logitech
+    // "@~5"     = back; // navigate back
+    // "@~6"     = forward; // navigate forward
 }

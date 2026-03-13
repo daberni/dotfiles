@@ -1,10 +1,13 @@
 # Plain zsh setup with lazy-loaded tool managers and cached CLI completions.
 
+# Enable prompt interpolation and keep zsh's command autocorrection off.
 setopt prompt_subst
 unsetopt correct_all
 
+# Treat punctuation as separators for completion and cursor movement.
 WORDCHARS=''
 
+# Load the modules used for interactive completion menus and prompt hooks.
 zmodload -i zsh/complist
 autoload -Uz add-zsh-hook compinit
 
@@ -16,6 +19,7 @@ setopt always_to_end
 
 bindkey -M menuselect '^o' accept-and-infer-next-history
 
+# Make Homebrew completions available even when a shell is started without .zprofile.
 if [[ -z "$HOMEBREW_PREFIX" && -d /opt/homebrew/share/zsh/site-functions ]]; then
   export HOMEBREW_PREFIX=/opt/homebrew
 fi
@@ -23,6 +27,7 @@ if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]
   fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi
 
+# Keep completion behavior close to the previous oh-my-zsh setup.
 zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*' matcher-list \
   'm:{[:lower:][:upper:]-_}={[:upper:][:lower:]_-}' \
@@ -43,9 +48,19 @@ else
   compinit -d "$ZSH_COMPDUMP"
 fi
 
+if [[ -f "$HOME/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh" ]]; then
+  export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=
+  export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
+  source "$HOME/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh"
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
+
+alias bubu='brew update && brew upgrade'
 alias ll="ls -la"
 alias cd..="cd .."
 
+# Lazy-load version managers so startup stays fast.
 _load_nvm() {
   local nvm_dir="${NVM_DIR:-$HOME/.nvm}"
   [[ -s "$nvm_dir/nvm.sh" ]] && source "$nvm_dir/nvm.sh" --no-use
@@ -80,6 +95,7 @@ rvm() {
   rvm "$@"
 }
 
+# Cache generated completion scripts from external CLIs instead of regenerating them.
 _load_cached_completion() {
   local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
   local cache_file cmd_name
@@ -101,70 +117,7 @@ _load_cached_completion forge forge forge --completion
 _load_cached_completion ngrok ngrok ngrok completion
 _load_cached_completion bb bb bb completion zsh
 
-git_develop_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-
-  local branch
-  for branch in dev devel develop development; do
-    if command git show-ref -q --verify "refs/heads/$branch"; then
-      print -r -- "$branch"
-      return 0
-    fi
-  done
-
-  print -r -- develop
-  return 1
-}
-
-git_main_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-
-  local remote ref
-
-  for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default,stable,master}; do
-    if command git show-ref -q --verify "$ref"; then
-      print -r -- "${ref:t}"
-      return 0
-    fi
-  done
-
-  for remote in origin upstream; do
-    ref=$(command git rev-parse --abbrev-ref "$remote/HEAD" 2>/dev/null)
-    if [[ "$ref" == "$remote/"* ]]; then
-      print -r -- "${ref#"$remote/"}"
-      return 0
-    fi
-  done
-
-  print -r -- master
-  return 1
-}
-
-alias g='git'
-alias ga='git add'
-alias gaa='git add --all'
-alias gb='git branch'
-alias gc='git commit --verbose'
-alias gca='git commit --verbose --all'
-alias gcb='git checkout -b'
-alias gcB='git checkout -B'
-alias gco='git checkout'
-alias gcd='git checkout $(git_develop_branch)'
-alias gcm='git checkout $(git_main_branch)'
-alias gd='git diff'
-alias gds='git diff --staged'
-alias gl='git pull'
-alias gp='git push'
-alias gst='git status'
-alias gsw='git switch'
-
-alias bi='brew install'
-alias bl='brew list'
-alias bo='brew outdated'
-alias bsl='brew services list'
-alias bu='brew update'
-alias bup='brew upgrade'
-
+# Build the prompt from a static host/path part and a git segment refreshed before each draw.
 _user_host() {
   if [[ -n "$SSH_CONNECTION" ]]; then
     print -n '%F{cyan}%n@%m%f:'
@@ -173,6 +126,7 @@ _user_host() {
   fi
 }
 
+# Compute git state once per prompt redraw instead of running git inside PROMPT itself.
 _update_git_prompt_segment() {
   local branch='' git_status_output line
   integer dirty=0 untracked=0
