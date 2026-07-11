@@ -1,0 +1,39 @@
+# DaBerni Dark — matched to macOS Terminal.app's FOREGROUND text rendering.
+#
+# Terminal.app renders foreground glyphs noticeably brighter than the raw
+# palette (its text rendering on this wide-gamut/HDR display): e.g. palette-1
+# red #990000 shows as #d6492e as text. Your real colors (ls, git, prompt,
+# syntax highlighting) are all foreground text, so these values are Terminal's
+# *foreground* colors, sampled from solid glyph blocks rendered side-by-side
+# (color-test.sh). Ghostty renders fg and bg from one palette, so this makes
+# text match Terminal.
+#
+# Trade-off: colored *backgrounds* (rare — setuid ls entries, some diff/vim
+# highlights) will be as vivid as text here, i.e. brighter than Terminal's
+# darker background rendering. Text is what matters in practice.
+#
+# NOTE: tuned to this specific display's gamut; re-derive if the display changes.
+
+background = 1e1e1e
+foreground = c0c0c0
+cursor-color = 839496
+cursor-text = 1e1e1e
+selection-background = 5e5e5e
+selection-foreground = c0c0c0
+
+palette = 0=#000000
+palette = 1=#d6492e
+palette = 2=#74b433
+palette = 3=#ede920
+palette = 4=#4db5ff
+palette = 5=#e44ce2
+palette = 6=#45a1ab
+palette = 7=#d1d1d1
+palette = 8=#909090
+palette = 9=#ff4c29
+palette = 10=#39ed2a
+palette = 11=#efee1b
+palette = 12=#4db5ff
+palette = 13=#ff4cff
+palette = 14=#32f3f4
+palette = 15=#ececec

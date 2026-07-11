@@ -1,0 +1,27 @@
+# This is the configuration file for Ghostty.
+# Run `ghostty +show-config --default --docs` to view all available options.
+# Docs: https://ghostty.org/docs/config
+
+# Dynamic theme: follows the macOS system light/dark appearance automatically.
+# Both variants are custom, ported from my Terminal.app "DaBerni" profiles
+# (see themes/DaBerni Dark and themes/DaBerni Light).
+theme = light:DaBerni Light,dark:DaBerni Dark
+
+# Match Terminal's "UseBrightBold": bold text uses the bright palette variant.
+bold-is-bright = true
+
+# Faint/dim text (SGR 2, e.g. Claude Code's hints) defaults to 0.5 opacity,
+# which washes out to light grey on the white light-mode background. Raise it
+# so dimmed text stays readable.
+faint-opacity = 0.7
+
+window-padding-x = 4
+window-padding-y = 4
+
+font-size = 12
+
+# quit-after-last-window-closed = true
+macos-option-as-alt = left
+
+window-width = 140
+window-height = 28

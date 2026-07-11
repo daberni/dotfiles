@@ -1,0 +1,39 @@
+# DaBerni Light — matched to macOS Terminal.app's "DaBerni Light" profile.
+#
+# Like the dark theme, these are Terminal's FOREGROUND text colors (sampled
+# from solid glyph blocks rendered side-by-side, color-test.sh) — the values
+# Terminal actually displays for ls/git/prompt on this display, not the raw
+# profile values. Base colors (bg/fg/cursor/selection) come from the profile.
+#
+# Trade-off: colored backgrounds render as vivid as text (rare in practice).
+# Tuned to this display's gamut; re-derive if the display changes.
+#
+# white (7) / bright-white (15) intentionally DIVERGE from Terminal here: on a
+# dark bg they're light, but for a light theme "white" foreground text must be
+# dark to be visible. So they're remapped to dark greys — this is what makes
+# the prompt's bold-white `$` (%B%F{white}, -> bright-white via bold-is-bright)
+# render near-black in light mode while staying bright-white in dark mode.
+
+background = ffffff
+foreground = 424242
+cursor-color = 839496
+cursor-text = ffffff
+selection-background = c0c0c0
+selection-foreground = 424242
+
+palette = 0=#303030
+palette = 1=#c33820
+palette = 2=#68a827
+palette = 3=#e8e617
+palette = 4=#3eabff
+palette = 5=#d43bd2
+palette = 6=#356f75
+palette = 7=#4d4d4d
+palette = 8=#828282
+palette = 9=#ff3b1e
+palette = 10=#2ee622
+palette = 11=#ecec16
+palette = 12=#3eabff
+palette = 13=#ff3bff
+palette = 14=#28efef
+palette = 15=#1a1a1a
