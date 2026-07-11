@@ -48,6 +48,28 @@ else
   compinit -d "$ZSH_COMPDUMP"
 fi
 
+# Let path-qualified Gradle wrapper calls use the Gradle task completer.
+if (( $+_comps[gradle] )); then
+  _gradlew_path_completion() {
+    local cmd="${words[1]}"
+    local wrapper_dir="${cmd:h}"
+
+    if [[ "$cmd" == */gradlew && -d "$wrapper_dir" ]]; then
+      local old_pwd="$PWD"
+      builtin cd -q -- "$wrapper_dir" || return 1
+      _gradle "$@"
+      local ret=$?
+      builtin cd -q -- "$old_pwd"
+      return $ret
+    fi
+
+    _gradle "$@"
+  }
+
+  compdef _gradlew_path_completion './gradlew'
+  compdef -p _gradlew_path_completion '*/gradlew'
+fi
+
 if [[ -f "$HOME/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh" ]]; then
   export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=
   export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
@@ -55,6 +77,10 @@ if [[ -f "$HOME/.oh-my-zsh/plugins/history-substring-search/history-substring-se
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 fi
+
+# Colorize BSD ls output (replaces the coloring oh-my-zsh used to set up).
+export CLICOLOR=1
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
 alias bubu='brew update && brew upgrade'
 alias ll="ls -la"
@@ -116,6 +142,7 @@ _load_cached_completion() {
 _load_cached_completion forge forge forge --completion
 _load_cached_completion ngrok ngrok ngrok completion
 _load_cached_completion bb bb bb completion zsh
+_load_cached_completion timr timr timr completion zsh
 
 # Build the prompt from a static host/path part and a git segment refreshed before each draw.
 _user_host() {
@@ -156,3 +183,8 @@ _update_git_prompt_segment() {
 add-zsh-hook precmd _update_git_prompt_segment
 
 PROMPT='$(_user_host)%B%F{blue}${PWD/#$HOME/~}%f%b${GIT_PROMPT_SEGMENT} %B%F{white}$%f%b '
+
+# Expose the Ghostty CLI (lives inside the app bundle).
+if [[ -d "/Applications/Ghostty.app/Contents/MacOS" ]]; then
+  export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
+fi
