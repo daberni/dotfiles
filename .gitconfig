@@ -2,6 +2,9 @@
 	autocrlf = input
 	longpaths = true
 	excludesfile = ~/.gitignore
+	fsmonitor = false
+	untrackedCache = true
+	pager = less --mouse -FR
 [user]
 	useConfigOnly = true
 	name = Bernhard Danecker
@@ -33,3 +36,14 @@
 	gpgsign = true
 [gpg "ssh"]
 	allowedSignersFile = /Users/bd/.git_allowed_signers
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
